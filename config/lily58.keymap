@@ -9,6 +9,34 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/ext_power.h>
 
+
+// Include necessary headers
+#include <zmk/display/oled.h>
+
+void update_display() {
+    // Retrieve relevant information (e.g., battery percentage)
+    uint8_t battery_percentage = get_battery_percentage();
+
+    // Update OLED display with relevant information
+    update_battery_display(battery_percentage);
+}
+
+// Main function
+void main() {
+    // Initialize OLED display
+    oled_init();
+
+    while (1) {
+        // Update OLED display
+        update_display();
+
+        // Delay or handle other tasks
+        k_msleep(1000); // Example delay
+    }
+}
+
+
+
 / {
     keymap {
         compatible = "zmk,keymap";
