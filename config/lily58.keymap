@@ -9,31 +9,38 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/ext_power.h>
 
-
-// Include necessary headers
 #include <zmk/display/oled.h>
 
-void update_display() {
-    // Retrieve relevant information (e.g., battery percentage)
-    uint8_t battery_percentage = get_battery_percentage();
-
-    // Update OLED display with relevant information
-    update_battery_display(battery_percentage);
+// Function to initialize the OLED display
+void oled_init() {
+    // Add code to initialize the OLED display over the I2C interface
+    // For example:
+    i2c_init();
+    oled_send_command(OLED_INIT_COMMAND);
 }
 
-// Main function
-void main() {
-    // Initialize OLED display
+// Function to update the content displayed on the OLED display
+void update_oled_display(const char *content) {
+    // Add code to update the OLED display content
+    // For example:
+    oled_clear();
+    oled_write_text(content);
+    oled_update();
+}
+
+// Function to handle OLED display updates in ZMK tasks
+void oled_task_user(void) {
+    // Add code to update OLED display content based on keyboard status or other information
+    // For example:
+     update_oled_display("Hello, World!");
+}
+
+// Initialize OLED display during keyboard initialization
+void keyboard_post_init_user(void) {
+    // Initialize the OLED display
     oled_init();
-
-    while (1) {
-        // Update OLED display
-        update_display();
-
-        // Delay or handle other tasks
-        k_msleep(1000); // Example delay
-    }
 }
+
 
 
 
