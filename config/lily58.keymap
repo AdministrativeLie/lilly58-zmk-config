@@ -11,71 +11,69 @@
 
 
 
-#include <zmk/display/oled.h>
 #include <lvgl/lvgl.h>
-#include "image1.h" // Include your image header file
 
-// Define display layers
-lv_obj_t *layer_info;
-lv_obj_t *layer_images;
+lv_obj_t *battery_label;
+lv_obj_t *bluetooth_label;
+lv_obj_t *layer_indicator;
 
-// Flag to track current display layer
-bool info_layer_active = true;
-
-// Function to toggle between display layers
 void toggle_display_layer() {
-    if (info_layer_active) {
-        lv_obj_set_hidden(layer_info, true);
-        lv_obj_set_hidden(layer_images, false);
-    } else {
-        lv_obj_set_hidden(layer_info, false);
-        lv_obj_set_hidden(layer_images, true);
-    }
+    // Toggle the display layers
     info_layer_active = !info_layer_active;
-}
 
-// Key handler function
-bool on_key_press(zmk_keycode_t keycode) {
+    // Update the layer indicator
     if (info_layer_active) {
-        // Check if the third layer is active and the space key is pressed
-        if (keycode == &kp SPACE) { // Replace YOUR_SPACE_KEYCODE with the appropriate keycode
-            toggle_display_layer();
-            return true;
-        }
+        lv_label_set_text(layer_indicator, "Default Layer");
+    } else {
+        lv_label_set_text(layer_indicator, "Lower/Raise Layer");
     }
-    return false;
+
+    // Update other widgets as needed based on the layer
+    // For example, update Bluetooth status and battery percentage
+    if (info_layer_active) {
+        // Update Bluetooth status label
+        lv_label_set_text(bluetooth_label, "Bluetooth: Connected");
+
+        // Update battery percentage label
+        lv_label_set_text(battery_label, "Battery Level: XX%");
+    } else {
+        // Update Bluetooth status label
+        lv_label_set_text(bluetooth_label, "Bluetooth: Disconnected");
+
+        // Update battery percentage label
+        lv_label_set_text(battery_label, "Battery Level: N/A");
+    }
 }
 
-// Initialize display layers
 void init_display_layers() {
     // Create information layer
     layer_info = lv_obj_create(lv_scr_act(), NULL);
-    // Add text labels, battery gauge, Bluetooth connection status, etc. to the information layer
-    lv_obj_t *battery_label = lv_label_create(layer_info, NULL);
+
+    // Add battery label
+    battery_label = lv_label_create(layer_info, NULL);
     lv_label_set_text(battery_label, "Battery Level: XX%");
     lv_obj_align(battery_label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 10);
-    // Similarly, add other widgets for Bluetooth connection status, current layer, keyboard split info, etc.
+
+    // Add Bluetooth status label
+    bluetooth_label = lv_label_create(layer_info, NULL);
+    lv_label_set_text(bluetooth_label, "Bluetooth: Connected");
+    lv_obj_align(bluetooth_label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 40);
+
+    // Add layer indicator label
+    layer_indicator = lv_label_create(layer_info, NULL);
+    lv_label_set_text(layer_indicator, "Default Layer");
+    lv_obj_align(layer_indicator, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 70);
 
     // Create images layer
     layer_images = lv_obj_create(lv_scr_act(), NULL);
-    // Display your images here
-    lv_obj_t *displayleft_img = lv_img_create(layer_images, NULL);
-    lv_img_set_src(displayleft_img, &displayleft);
-
-    lv_obj_t *displayright_img = lv_img_create(layer_images, NULL);
-    lv_img_set_src(displayright_img, &displayright);
-
-    // Initially hide the images layer
     lv_obj_set_hidden(layer_images, true);
 }
 
-// Initialize LVGL and display layers
 void init_display() {
     lv_init();
     init_display_layers();
 }
 
-// Main function
 void main() {
     init_display();
     // Add other initialization code here
@@ -84,8 +82,6 @@ void main() {
         // Main loop
     }
 }
-
-
 
 
 
