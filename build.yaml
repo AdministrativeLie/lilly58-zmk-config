@@ -20,7 +20,7 @@
 
 include:
   - board: nice_nano_v2
-    shield: lily58_left ssd1306 nice_view_adapter
+    shield: lily58_left ssd1306 
   - board: nice_nano_v2
-    shield: lily58_right ssd1306 nice_view_adapter
+    shield: lily58_right ssd1306 
 
