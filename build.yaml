@@ -20,7 +20,7 @@
 
 include:
   - board: nice_nano_v2
-    shield: lily58_left ssd1306 
+    shield: lily58_left i2c_oled 
   - board: nice_nano_v2
-    shield: lily58_right ssd1306 
+    shield: lily58_right i2c_oled 
 
